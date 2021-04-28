@@ -1,6 +1,7 @@
 package com.yafnds.springbootshiro.pojo;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class User {
 
     /** 主键 */
@@ -28,5 +30,8 @@ public class User {
 
     /** 权限 */
     private String perms;
+
+    /** 盐值 */
+    private String salt;
 
 }

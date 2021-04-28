@@ -21,4 +21,9 @@ public interface UserMapper {
      */
     User queryUserByName(String name);
 
+    /**
+     * 新增一个用户
+     * @param user 需要插入的用户信息
+     */
+    void save(User user);
 }

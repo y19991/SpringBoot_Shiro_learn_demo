@@ -17,4 +17,10 @@ public interface UserService {
      * @return
      */
     User queryUserByName(String name);
+
+    /**
+     * 新增一个用户
+     * @param user
+     */
+    void save(User user);
 }

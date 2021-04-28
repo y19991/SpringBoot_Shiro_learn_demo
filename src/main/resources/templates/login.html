@@ -12,7 +12,10 @@
 <form th:action="@{/login}">
     <p>用户名：<input type="text" name="username"></p>
     <p>密码：<input type="text" name="password"></p>
-    <p>密码：<input type="submit"></p>
+    <p>
+        <input type="submit">
+        <a th:href="@{/toRegister}">注册</a>
+    </p>
 </form>
 </body>
 </html>

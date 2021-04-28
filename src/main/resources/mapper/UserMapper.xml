@@ -7,9 +7,19 @@
         <result property="name" column="USERNAME"/>
         <result property="pwd" column="PASSWORD"/>
         <result property="perms" column="PERMS"/>
+        <result property="salt" column="SALT"/>
     </resultMap>
 
+    <!-- 根据用户名查询 -->
     <select id="queryUserByName" parameterType="string" resultMap="userResultMap">
         select * from mybatis.user where USERNAME = #{name};
     </select>
+
+    <!-- 新增一个用户 -->
+    <insert id="save" parameterType="user" >
+        insert into
+            mybatis.user(USERNAME, PASSWORD, PERMS, SALT)
+        value
+            (#{name}, #{pwd}, #{perms}, #{salt});
+    </insert>
 </mapper>

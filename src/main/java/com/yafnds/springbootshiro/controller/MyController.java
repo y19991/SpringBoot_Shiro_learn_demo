@@ -1,5 +1,7 @@
 package com.yafnds.springbootshiro.controller;
 
+import com.yafnds.springbootshiro.pojo.User;
+import com.yafnds.springbootshiro.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
+
 /**
  * 包名称： com.yafnds.springbootshiro.controller
  * 类名称：MyController
@@ -22,6 +26,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class MyController {
+
+    @Resource
+    private UserService userService;
 
     @RequestMapping({"/","/index"})
     public String toIndex(Model model) {
@@ -63,6 +70,21 @@ public class MyController {
         } catch (IncorrectCredentialsException e) {
             model.addAttribute("msg", "密码错误");
             return "login";
+        }
+    }
+
+    @RequestMapping("toRegister")
+    public String toRegister() { return "/register"; }
+
+    @RequestMapping("/register")
+    public String register(User user) {
+
+        try {
+            userService.save(user);
+            return "redirect:/toLogin";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/toRegister";
         }
     }
 
