@@ -1,0 +1,93 @@
+# 应用服务 WEB 访问端口
+server:
+  port: 8080
+
+# 应用名称
+spring:
+  application:
+    name: SpringBoot-Shiro
+
+  #数据库驱动
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 数据源名称
+    name: defaultDataSource
+    # 数据库连接地址
+    url: jdbc:mysql://localhost:3306/mybatis?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8
+    # 数据库用户名&密码：
+    username: root
+    password: root
+    # 切换数据源为druid
+    type: com.alibaba.druid.pool.DruidDataSource
+
+    #Spring Boot 默认是不注入这些属性值的，需要自己绑定
+    #druid 数据源专有配置
+    druid:
+      # 初始连接数
+      initial-size: 5
+      # 最小连接池数量
+      min-idle: 5
+      # 最大连接池数量
+      max-active: 20
+      # 配置获取连接等待超时的时间
+      max-wait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      time-between-eviction-runs-millis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      min-evictable-idle-time-millis: 300000
+      # 配置一个连接在池中最大生存的时间，单位是毫秒
+      max-evictable-idle-time-millis: 900000
+      # 配置检测连接是否有效
+      validation-query: SELECT 1 FROM DUAL
+      # 空闲时检测配置连接是否有效
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      # PSCache
+      pool-prepared-statements: true
+
+      # 配置监控统计拦截的filters，stat:监控统计、log4j：日志记录、wall：防御sql注入
+      # 如果允许时报错  java.lang.ClassNotFoundException: org.apache.log4j.Priority
+      # 则导入 log4j 依赖即可，Maven 地址：https://mvnrepository.com/artifact/log4j/log4j
+      filter: stat,wall,log4j
+      # 每个连接最多缓存多少个SQL
+      max-pool-prepared-statement-per-connection-size: 20
+      # 合并多个DruidDataSource的监控数据
+      use-global-data-source-stat: true
+      # 连接属性。比如设置一些连接池统计方面的配置。
+      connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+
+
+  # Thymeleaf (ThymeleafAutoConfiguration)
+  # 开启模板缓存（默认值： true ）
+  thymeleaf:
+    cache: true
+    # 检查模板是否存在，然后再呈现
+    check-template: true
+    # 检查模板位置是否正确（默认值 :true ）
+    check-template-location: true
+    #Content-Type 的值（默认值： text/html ）
+    servlet:
+      content-type: text/html
+    # 开启 MVC Thymeleaf 视图解析（默认值： true ）
+    enabled: true
+    # 模板编码
+    encoding: UTF-8
+    # 要被排除在解析之外的视图名称列表，⽤逗号分隔
+    excluded-view-names:
+    # 要运⽤于模板之上的模板模式。另⻅ StandardTemplate-ModeHandlers( 默认值： HTML5)
+    mode: HTML5
+    # 在构建 URL 时添加到视图名称前的前缀（默认值： classpath:/templates/ ）
+    prefix: classpath:/templates/
+    # 在构建 URL 时添加到视图名称后的后缀（默认值： .html ）
+    suffix: .html
+
+#下面这些内容是为了让MyBatis映射
+#指定Mybatis的Mapper文件
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  #指定Mybatis的实体目录
+  type-aliases-package: com.yafnds.springbootshiro.pojo
+  #开启驼峰命名
+  configuration:
+    map-underscore-to-camel-case: true
