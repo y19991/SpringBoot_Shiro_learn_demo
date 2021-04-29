@@ -9,12 +9,12 @@
 <hr>
 
 <p th:text="${msg}" style="color: #ff0000;"></p>
-<form th:action="@{/login}">
+<form th:action="@{/user/login}">
     <p>用户名：<input type="text" name="username"></p>
     <p>密码：<input type="text" name="password"></p>
     <p>
         <input type="submit">
-        <a th:href="@{/toRegister}">注册</a>
+        <a th:href="@{/user/toRegister}">注册</a>
     </p>
 </form>
 </body>

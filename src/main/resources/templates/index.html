@@ -17,20 +17,22 @@
     </div>-->
 
     <div shiro:notAuthenticated style="display: inline">
-        <a th:href="@{/toLogin}">登录</a>
+        <a th:href="@{/user/toLogin}">登录</a>
         &nbsp;|&nbsp;
-        <a th:href="@{/toRegister}">注册</a>
-        &nbsp;|&nbsp;
+        <a th:href="@{/user/toRegister}">注册</a>
     </div>
-    <a th:href="@{/logout}">注销</a>
+    <div shiro:authenticated="" style="display: inline">
+        <a th:href="@{/user/logout}">注销</a>
+    </div>
+
     <hr>
 
-<!--    <div shiro:hasPermission="user:add" style="display: inline">-->
-    <div style="display: inline">
+    <div shiro:hasPermission="user:add" style="display: inline">
+<!--    <div style="display: inline">-->
         <a th:href="@{/user/add}">add</a>&nbsp;|&nbsp;
     </div>
-<!--    <div shiro:hasPermission="user:update" style="display: inline">-->
-    <div style="display: inline">
+    <div shiro:hasPermission="user:update" style="display: inline">
+<!--    <div style="display: inline">-->
         <a th:href="@{/user/update}">update</a>
     </div>
 

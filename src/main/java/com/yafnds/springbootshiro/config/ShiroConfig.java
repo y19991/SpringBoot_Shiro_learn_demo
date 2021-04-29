@@ -1,6 +1,8 @@
 package com.yafnds.springbootshiro.config;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import com.yafnds.springbootshiro.shiro.CustomRealm;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -9,6 +11,8 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import static com.yafnds.springbootshiro.util.EncryptUtil.HASH_ITERATIONS;
 
 /**
  * 包名称： com.yafnds.springbootshiro.config
@@ -44,7 +48,14 @@ public class ShiroConfig {
             role： 拥有某个角色权限
          */
         Map<String, String> filterMap = new LinkedHashMap<>();
-        
+
+        // 系统公共资源
+        filterMap.put("/user/toLogin", "anon");
+        filterMap.put("/user/toRegister", "anon");
+        filterMap.put("/user/login", "anon");
+        filterMap.put("/user/register", "anon");
+
+        // 系统受限资源
         filterMap.put("/user/add", "perms[user:add]");
         filterMap.put("/user/update", "perms[user:update]");
         filterMap.put("/user/*", "authc");
@@ -52,23 +63,23 @@ public class ShiroConfig {
         bean.setFilterChainDefinitionMap(filterMap);
 
         // 设置登录请求
-        bean.setLoginUrl("/toLogin");
+        bean.setLoginUrl("/user/toLogin");
 
         // 设置未授权请求
-        bean.setUnauthorizedUrl("/noauth");
+        bean.setUnauthorizedUrl("/user/noauth");
 
         return bean;
     }
 
     /**
      * 第二步：默认的安全管理器
-     * @param userRealm
+     * @param customRealm
      */
     @Bean
-    public DefaultWebSecurityManager getDefaultWebSecurityManager(@Qualifier("userRealm") UserRealm userRealm) {
+    public DefaultWebSecurityManager getDefaultWebSecurityManager(@Qualifier("customRealm") CustomRealm customRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         // 关联自定义Realm
-        securityManager.setRealm(userRealm);
+        securityManager.setRealm(customRealm);
         return securityManager;
     }
 
@@ -77,8 +88,20 @@ public class ShiroConfig {
      * @return 自定义Realm类实例
      */
     @Bean
-    public UserRealm userRealm() {
-        return new UserRealm();
+    public CustomRealm customRealm() {
+
+        CustomRealm customRealm = new CustomRealm();
+
+        // 修改凭证校验匹配器
+        HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
+        // 设置加密算法为MD5
+        credentialsMatcher.setHashAlgorithmName("MD5");
+        // 设置散列次数
+        credentialsMatcher.setHashIterations(HASH_ITERATIONS);
+
+        customRealm.setCredentialsMatcher(credentialsMatcher);
+
+        return customRealm;
     }
 
     /**

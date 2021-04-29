@@ -25,23 +25,18 @@ import javax.annotation.Resource;
  */
 
 @Controller
-public class MyController {
+@RequestMapping("/user")
+public class UserController {
 
     @Resource
     private UserService userService;
 
-    @RequestMapping({"/","/index"})
-    public String toIndex(Model model) {
-        model.addAttribute("msg","hello,Shiro");
-        return "index";
-    }
-
-    @RequestMapping("/user/add")
+    @RequestMapping("/add")
     public String add() {
         return "user/add";
     }
 
-    @RequestMapping("/user/update")
+    @RequestMapping("/update")
     public String update() {
         return "user/update";
     }
@@ -73,7 +68,7 @@ public class MyController {
         }
     }
 
-    @RequestMapping("toRegister")
+    @RequestMapping("/toRegister")
     public String toRegister() { return "/register"; }
 
     @RequestMapping("/register")
