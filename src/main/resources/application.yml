@@ -91,3 +91,8 @@ mybatis:
   #开启驼峰命名
   configuration:
     map-underscore-to-camel-case: true
+
+#日志等级
+logging:
+  level:
+    com.yafnds.springbootshiro: debug

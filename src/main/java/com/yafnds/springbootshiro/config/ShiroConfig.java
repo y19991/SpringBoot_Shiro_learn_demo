@@ -3,6 +3,7 @@ package com.yafnds.springbootshiro.config;
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.yafnds.springbootshiro.shiro.CustomRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -100,6 +101,17 @@ public class ShiroConfig {
         credentialsMatcher.setHashIterations(HASH_ITERATIONS);
 
         customRealm.setCredentialsMatcher(credentialsMatcher);
+
+        // 开启缓存管理
+        customRealm.setCacheManager(new EhCacheManager());
+        // 开启全局缓存
+        customRealm.setCachingEnabled(true);
+        // 开启身份认证缓存
+        customRealm.setAuthenticationCachingEnabled(true);
+        customRealm.setAuthenticationCacheName("authenticationCache");
+        // 开启缓存授权
+        customRealm.setAuthorizationCachingEnabled(true);
+        customRealm.setAuthorizationCacheName("authorizationCache");
 
         return customRealm;
     }

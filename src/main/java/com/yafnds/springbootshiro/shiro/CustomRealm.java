@@ -2,6 +2,7 @@ package com.yafnds.springbootshiro.shiro;
 
 import com.yafnds.springbootshiro.pojo.User;
 import com.yafnds.springbootshiro.service.UserService;
+import com.yafnds.springbootshiro.util.ApplicationContextUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -67,10 +68,13 @@ public class CustomRealm extends AuthorizingRealm {
         /*
             注入UserService
                 方法一：自动注入 @Resource
-                方法二：通过工具类，从bean工厂中获取
-        */
+                    @Resource
+                    private UserService userService;
 
-        User user = userService.queryUserByName(principal);
+                方法二：通过工具类，从bean工厂中获取
+                    UserService userService = (UserService) ApplicationContextUtil.getBean("userService");
+        */
+        User user = this.userService.queryUserByName(principal);
         if (!ObjectUtils.isEmpty(user)) {
             // 密码认证。由shiro实现，我们直接返回结果值
             return new SimpleAuthenticationInfo(user, user.getPwd()
